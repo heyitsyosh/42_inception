@@ -1,9 +1,9 @@
 all: up
 
 up: 
-	cd srcs; docker compose up --build -d; docker logs -f mariadb
+	cd srcs; docker compose up --build -d; docker logs -f wordpress
 
-clean:
+down:
 	cd srcs; docker compose down --remove-orphans
 
 re: clean all

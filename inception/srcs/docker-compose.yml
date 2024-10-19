@@ -3,12 +3,14 @@ version: '3'
 
 services:
   nginx:
+    container_name: nginx
     build: ./requirements/nginx
     depends_on:
       - wordpress
     ports:
-      - "80:80"
       - "443:443"
+    expose:
+      - 9000
     networks:
       - inception_net
     env_file:
@@ -16,13 +18,19 @@ services:
     restart: unless-stopped
 
   wordpress:
+    container_name: wordpress
     build: ./requirements/wordpress
     depends_on:
       - mariadb
+    expose:
+      - 9000
+      - 3306
     networks:
       - inception_net
     volumes:
-      - wp_data:/var/www/html/wp-content
+      - wp_data:/var/www/html
+    environment:
+      - WPDB_HOST=mariadb
     env_file:
       - .env
     restart: unless-stopped
@@ -30,6 +38,8 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
+    expose:
+      - 3306
     networks:
       - inception_net
     volumes:
@@ -55,4 +65,5 @@ volumes:
       device: /home/${LOGIN}/data/db
 
 networks:
-  inception_net: {}
+  inception_net:
+    name: inception_net
