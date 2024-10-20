@@ -1,6 +1,5 @@
 FROM debian:bullseye
 
-COPY config/www.conf /etc/php/7.4/fpm/pool.d
 COPY init.sh /var/www/html/init.sh
 
 WORKDIR /var/www/html
@@ -24,7 +23,10 @@ RUN apt-get update && apt-get install -y \
     && chmod +x /var/www/html/init.sh \
 	&& mkdir /run/php \
 	&& chown -R www-data:www-data /var/www/html \
-	&& chmod -R 755 /var/www/html
+	&& chmod -R 755 /var/www/html \
+	&& chmod -R 777 /var/www/html/wp-content
+
+COPY config/www.conf /etc/php/7.4/fpm/pool.d
 
 ENTRYPOINT [ "/bin/bash", "/var/www/html/init.sh" ]
 #CMD ["php-fpm7.4", "-F"]
