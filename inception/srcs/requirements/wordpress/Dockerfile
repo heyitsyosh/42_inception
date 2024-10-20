@@ -22,7 +22,9 @@ RUN apt-get update && apt-get install -y \
     && chmod +x /usr/bin/wp \
     && wp core download --allow-root \
     && chmod +x /var/www/html/init.sh \
-	&& mkdir /run/php
+	&& mkdir /run/php \
+	&& chown -R www-data:www-data /var/www/html \
+	&& chmod -R 755 /var/www/html
 
 ENTRYPOINT [ "/bin/bash", "/var/www/html/init.sh" ]
 #CMD ["php-fpm7.4", "-F"]

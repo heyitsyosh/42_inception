@@ -5,8 +5,7 @@ RUN apt-get update \
 	&& mkdir /var/run/mysqld \
 	&& chown -R mysql:mysql /var/run/mysqld
 
-COPY maria.conf /etc/my.cnf.d/maridb-server.cnf
+COPY maria.conf /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY init.sh /
 
-ENTRYPOINT [ "bin/bash", "init.sh" ]
-# CMD [ "mariadbd", "--init-file=/etc/my.cnf.d/init.txt" ]
+ENTRYPOINT [ "bin/bash", "/init.sh" ]
